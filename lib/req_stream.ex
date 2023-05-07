@@ -1,18 +1,22 @@
 defmodule ReqStream do
   @moduledoc """
-  Documentation for `ReqStream`.
+  Adds support for streaming requests to `Req`.
   """
 
   @doc """
-  Hello world.
+  Attach the `Req.Stream` plugin.
 
   ## Examples
 
-      iex> ReqStream.hello()
-      :world
+      iex> %Req.Response{body: {:stream, stream}} =
+      ...>   Req.new()
+      ...>   |> ReqStream.attach()
+      ...>   |> Req.get!(url: "https://httpbin.org/stream/3")
+      iex> Enum.to_list(stream)
+      ["line 1", "line 2", "line 3"]
 
   """
-  def hello do
-    :world
+  def attach(req, _opts \\ []) do
+    req
   end
 end
